@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController } from '@ionic/angular';
-declare let google;
+declare let google: any;
 @Component({
   selector: 'app-home',
   // templateUrl: 'home.html'
@@ -8,11 +8,11 @@ declare let google;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  @ViewChild('map') mapElement: ElementRef;
+  @ViewChild('map', {read: ElementRef, static: false}) mapRef: ElementRef;
   map: any;
   constructor(public navCtrl: NavController) {
   }
-  ionViewDidLoad(){
+  ionViewDidEnter(){
     this.loadMap();
   }
   loadMap(){
@@ -20,9 +20,10 @@ export class HomePage {
     const mapOptions = {
       center: latLng,
       zoom: 15,
+      disableDefaultUI: true,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
-    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
   }
   // addMarker(){
   //   const marker = new google.maps.Marker({
